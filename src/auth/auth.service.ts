@@ -15,7 +15,7 @@ export class AuthService {
       const user = await this.databaseService.user.findUnique({
         where: { email: body.email },
       });
-      if (bcrypt.compareSync(body.password, user.password)) {
+      if (await bcrypt.compare(body.password, user.password)) {
         const payload = { username: user.email, sub: user.id };
         return { success: 'true', access_token: this.jwtService.sign(payload) };
       } else {
@@ -28,15 +28,15 @@ export class AuthService {
     return 'failure ';
   }
 
-  async signUp(email: string, pass: string) {
+  async signUp(body: any) {
     try {
       const user = await this.databaseService.user.findUnique({
-        where: { email },
+        where: { email : body.email },
       });
       if (!user) {
-        const hashedPassword = bcrypt.hashSync(pass, 10);
+        const hashedPassword = await bcrypt.hash(body.password, 10);
         const resp = await this.databaseService.user.create({
-          data: { email, password: hashedPassword, categories: [] },
+          data: { email : body.email, password: hashedPassword, categories: [] },
         });
         const { password, ...response } = resp;
         return { success: 'true', response };
