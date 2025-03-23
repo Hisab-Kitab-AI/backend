@@ -26,7 +26,6 @@ export class JwtAuthGuard implements CanActivate {
       });
 
       request.headers.userId = decoded.sub;
-      console.log({request})
       return true;
     } catch (error) {
       console.log({error})

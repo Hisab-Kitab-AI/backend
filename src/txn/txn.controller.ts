@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards, Headers } from '@nestjs/common';
 import { TxnService } from './txn.service';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
@@ -8,8 +8,7 @@ export class TxnController {
 
     @UseGuards(JwtAuthGuard)
     @Post()
-    async createNewTxn(@Body() body) {
-      console.log('inside create new txn', body);
+    async createNewTxn(@Body() body, @Headers() headers) {
       return this.txnService.createNewTxn(body);
     }
 
