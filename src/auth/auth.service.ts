@@ -37,18 +37,21 @@ export class AuthService {
       const user = await this.databaseService.user.findUnique({
         where: { email : body.email },
       });
-      if (!user) {
+      if(user){
+        return new BadRequestException({
+          message: `User with the given email already exists`
+        })
+      }
+      else {
         const hashedPassword = await bcrypt.hash(body.password, 10);
-        const resp = await this.databaseService.user.create({
+        const newUserDetails = await this.databaseService.user.create({
           data: { email : body.email, password: hashedPassword, categories: [] },
         });
-        const { password, ...response } = resp;
+        const { password, ...response } = newUserDetails;
         return { success: 'true', response };
       }
-      return { success: 'false', message: 'email already exists' };
     } catch (err) {
-      console.log(err);
-      return { success: 'false', message: 'error occured' };
+      throw new InternalServerErrorException(`Error while trying to sign up`)
     }
   }
 }
