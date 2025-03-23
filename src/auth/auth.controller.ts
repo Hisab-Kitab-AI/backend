@@ -15,9 +15,5 @@ export class AuthController {
     return this.authService.signUp({...body});
   }
 
-  @Get('test')
-  async test(){
-    return "hello"
-  }
 }
 

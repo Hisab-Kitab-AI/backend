@@ -8,8 +8,8 @@ import { DatabaseService } from './database/database.service';
 import { JwtStrategy } from './auth/jwt.strategy';
 
 @Module({
-  imports: [AuthModule, TxnModule, UserInfoModule],
+  imports: [AuthModule, TxnModule],
   controllers: [AppController],
-  providers: [AppService, DatabaseService, JwtStrategy],
+  providers: [AppService, DatabaseService],
 })
 export class AppModule {}
