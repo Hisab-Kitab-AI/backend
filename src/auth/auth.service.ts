@@ -21,8 +21,8 @@ export class AuthService {
         })
       }
       if (await bcrypt.compare(body.password, user.password)) {
-        const payload = { email: user.email, userId: user.id };
-        return { success: 'true', access_token: this.jwtService.sign(payload) };
+        const payload = { email: user.email, sub: user.id };
+        return { success: 'true', access_token: this.jwtService.sign(payload, {secret : 'JWT_SECRET' }) };
       } else {
         return { success: 'false', message: 'password is incorrect' };
       }
